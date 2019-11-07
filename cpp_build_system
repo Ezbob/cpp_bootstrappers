@@ -41,7 +41,7 @@ if [ -n "$1" ]; then
 fi
 
 CUR_DIR=$(dirname $0)
-TEMPLATE_DIR=${CUR_DIR}/templates
+TEMPLATE_DIR=${CUR_DIR}/build_sys_templates
 TEMP_DIR=${CUR_DIR}/.temp
 
 PROJECT_NAME=$(get_input "Project name ?" "Untitled")
