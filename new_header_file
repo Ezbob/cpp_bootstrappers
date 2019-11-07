@@ -1,4 +1,5 @@
 #!/bin/bash
+# Requires a random generator
 
 function die() {
     echo $1
@@ -7,14 +8,16 @@ function die() {
 
 [ -z "$1" ] && die "Expected first argument to be path to the header filename"
 
-HEADER_RANDOM_TOKEN=$(openssl.exe rand -hex 16)
+RANDOM_GENERATOR=${RANDOM_GENERATOR:-'openssl rand -hex 25'}
+
+HEADER_RANDOM_TOKEN=$(${RANDOM_GENERATOR})
 PATH_TO_HEADER=$1
 
 cat > ${PATH_TO_HEADER} << EOF
-#ifndef HEADER_GUARD_${HEADER_RANDOM_TOKEN}
-#define HEADER_GUARD_${HEADER_RANDOM_TOKEN}
+#ifndef _HEADER_GUARD_${HEADER_RANDOM_TOKEN}
+#define _HEADER_GUARD_${HEADER_RANDOM_TOKEN}
 
-
+// Add some code here
 
 #endif
 EOF
