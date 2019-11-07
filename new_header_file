@@ -1,0 +1,20 @@
+#!/bin/bash
+
+function die() {
+    echo $1
+    exit 1
+}
+
+[ -z "$1" ] && die "Expected first argument to be path to the header filename"
+
+HEADER_RANDOM_TOKEN=$(openssl.exe rand -hex 16)
+PATH_TO_HEADER=$1
+
+cat > ${PATH_TO_HEADER} << EOF
+#ifndef HEADER_GUARD_${HEADER_RANDOM_TOKEN}
+#define HEADER_GUARD_${HEADER_RANDOM_TOKEN}
+
+
+
+#endif
+EOF
