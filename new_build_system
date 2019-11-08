@@ -40,6 +40,8 @@ if [ -n "$1" ]; then
     OUT_DIR=$1
 fi
 
+[ ! -d "$OUT_DIR" ] && die "'$OUT_DIR' is not a directory"
+
 CUR_DIR=$(dirname $0)
 TEMPLATE_DIR=${CUR_DIR}/build_sys_templates
 TEMP_DIR=${CUR_DIR}/.temp
