@@ -16,24 +16,23 @@ SET(CMAKE_EXE_LINKER_FLAGS " -Wall -Wextra -static-libgcc -static-libstdc++") # 
 
 # Next steps:
 
-# # set sources
-# SET(${SOURCES}
-#    "src/main.cpp"
-# )
+SET(${SOURCES}
+   "src/main.cpp"
+)
 
-# # Adds an executable
-# ADD_EXECUTABLE(${PROJECT_NAME} "")
+# Adds an executable
+ADD_EXECUTABLE(${PROJECT_NAME} "")
+
+# Target_Sources only works when sources has been set to "" in lib/exe
+# Target_Sources helps with transidental limiting (i.e. PRIVATE, PUBLIC or INTERFACE)
+# all TARGET_* needs to defined after the target (since it has to be there first)
+
+TARGET_SOURCES(${PROJECT_NAME} PRIVATE ${SOURCES})
 
 # # Adds a (STATIC) library
 # # STATIC adds archive files ".a" that can included in a compile process
 # # SHARED adds .dll, .so or .dynlib
 # ADD_LIBRARY(${PROJECT_NAME} STATIC "")
-
-# # Target_Sources only works when sources has been set to "" in lib/exe
-# # Target_Sources helps with transidental limiting (i.e. PRIVATE, PUBLIC or INTERFACE)
-# # all TARGET_* needs to defined after the target (since it has to be there first)
-
-# TARGET_SOURCES(${PROJECT_NAME} PRIVATE ${SOURCES})
 
 # TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
