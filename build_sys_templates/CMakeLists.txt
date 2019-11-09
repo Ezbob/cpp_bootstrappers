@@ -3,31 +3,40 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 # Name and description are injected from makefile
 PROJECT(${PROJECT_NAME}
     VERSION 0.1
-    DESCRIPTION ${PROJECT_DESCRIPTION}
+    DESCRIPTION "${PROJECT_DESCRIPTION}"
     LANGUAGES CXX
 )
 
 # CMAKE module path adding "cmake" directory to the path
-set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+SET(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
+# SOURCES_PREFIX refers to the source folder and is useful when stating
+# the source files depedencies of a target
+SET(SOURCES_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+# Compilation flags that depends on build type
+# A symbol _DEBUG is exposed to enable conditional compilation through preprocessor directives
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -D_DEBUG -g")
 SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++11 -O3")
-SET(CMAKE_EXE_LINKER_FLAGS " -Wall -Wextra -static-libgcc -static-libstdc++") # static linking stdlib
+
+# Linker flags. This just makes the c and c++ stdlibs statically linked for higher portability
+SET(CMAKE_EXE_LINKER_FLAGS " -Wall -Wextra -static-libgcc -static-libstdc++")
+
+SET(EXEC_NAME "${PROJECT_NAME}")
 
 # Next steps:
-
-SET(${SOURCES}
-   "src/main.cpp"
+SET(SOURCES
+    "${SOURCES_PREFIX}/main.cpp"
 )
 
 # Adds an executable
-ADD_EXECUTABLE(${PROJECT_NAME} "")
+ADD_EXECUTABLE(${EXEC_NAME} "")
 
-# Target_Sources only works when sources has been set to "" in lib/exe
-# Target_Sources helps with transidental limiting (i.e. PRIVATE, PUBLIC or INTERFACE)
+# Target_Sources works best when sources has been set to "" in lib/exe (this then becomes a legacy parameter)
+# Target_Sources helps with transitive scoping (i.e. PRIVATE, PUBLIC or INTERFACE)
 # all TARGET_* needs to defined after the target (since it has to be there first)
 
-TARGET_SOURCES(${PROJECT_NAME} PRIVATE ${SOURCES})
+TARGET_SOURCES(${EXEC_NAME} PRIVATE ${SOURCES})
 
 # # Adds a (STATIC) library
 # # STATIC adds archive files ".a" that can included in a compile process
