@@ -61,7 +61,7 @@ replace_parameter "@@CURRENT_YEAR@@" "${CURRENT_YEAR}" "${ALL_REPLACE_TEMPLATES_
 replace_parameter "@@PROJECT_NAME@@" "${PROJECT_NAME}" "${ALL_REPLACE_TEMPLATES_FILES}"
 replace_parameter "@@PROJECT_DESCRIPTION@@" "${PROJECT_DESCRIPTION}" "${ALL_REPLACE_TEMPLATES_FILES}"
 
-cd ${TEMP_DIR} && cp -r . ${OUT_DIR%/}/ && cd - 2> /dev/null > /dev/null
+cd ${TEMP_DIR} && cp -r -n . ${OUT_DIR%/}/ && cd - 2> /dev/null > /dev/null
 
 unmake_resources
 
