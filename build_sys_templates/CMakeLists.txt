@@ -14,13 +14,16 @@ SET(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 # the source files depedencies of a target
 SET(SOURCES_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+# A set of compilation flags that is always on when compiling C++
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
+
 # Compilation flags that depends on build type
 # A symbol _DEBUG is exposed to enable conditional compilation through preprocessor directives
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -D_DEBUG -g")
-SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=c++11 -O3")
+SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -g")
+SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # Linker flags. This just makes the c and c++ stdlibs statically linked for higher portability
-SET(CMAKE_EXE_LINKER_FLAGS " -Wall -Wextra -static-libgcc -static-libstdc++")
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
 
 SET(EXEC_NAME "${PROJECT_NAME}")
 
@@ -41,11 +44,11 @@ TARGET_SOURCES(${EXEC_NAME} PRIVATE ${SOURCES})
 # # Adds a (STATIC) library
 # # STATIC adds archive files ".a" that can included in a compile process
 # # SHARED adds .dll, .so or .dynlib
-# ADD_LIBRARY(${PROJECT_NAME} STATIC "")
+# ADD_LIBRARY(${EXEC_NAME} STATIC "")
 
-# TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+# TARGET_LINK_LIBRARIES(${EXEC_NAME} PRIVATE somecoollib)
 
-# TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE somecoollib)
+# TARGET_INCLUDE_DIRECTORIES(${EXEC_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # # There are also non-"Target_" version of most of the above these does not "bind" to
 # # a specific target (not the best of idea for encapsulation)
@@ -56,9 +59,9 @@ TARGET_SOURCES(${EXEC_NAME} PRIVATE ${SOURCES})
 
 # # Custom targets. Here is a post build that strips a binary when in release
 # if(${CMAKE_BUILD_TYPE}, Release)
-# add_custom_command(TARGET ${PROJECT_NAME}
+# add_custom_command(TARGET ${EXEC_NAME}
 #     POST_BUILD
-#     COMMAND strip ${PROJECT_NAME}
+#     COMMAND strip ${EXEC_NAME}
 # )
 # endif()
 
