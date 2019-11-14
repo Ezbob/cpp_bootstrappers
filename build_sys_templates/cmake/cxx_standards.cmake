@@ -1,6 +1,6 @@
 # More rescent CMake include the CMAKE_CXX_STANDARD
 # but this file is just for backward compatibility with the 3.0.2 cmake
-# implementation 
+# implementation
 
 function(USE_CXX11_STANDARD)
     # Do we support c++11 ?
@@ -24,7 +24,7 @@ function(USE_CXX14_STANDARD)
     INCLUDE(CheckCXXCompilerFlag)
 
     CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
-    
+
     IF(COMPILER_SUPPORTS_CXX14)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
     ELSE()
@@ -37,7 +37,7 @@ function(USE_CXX17_STANDARD)
     INCLUDE(CheckCXXCompilerFlag)
 
     CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
-    
+
     IF(COMPILER_SUPPORTS_CXX17)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
     ELSE()
