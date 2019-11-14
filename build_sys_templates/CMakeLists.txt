@@ -1,20 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
-# Do we support c++11 ?
-INCLUDE(CheckCXXCompilerFlag)
-
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-    #c++0x is the code for when the c++11 standard was new
-
-IF(COMPILER_SUPPORTS_CXX11)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ELSEIF(COMPILER_SUPPORTS_CXX0X)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-ELSE()
-    MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support")
-ENDIF()
-
 # Name and description are injected from makefile
 PROJECT(${PROJECT_NAME}
     VERSION 0.1
@@ -24,6 +9,12 @@ PROJECT(${PROJECT_NAME}
 
 # CMAKE module path adding "cmake" directory to the path
 SET(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
+# Adds the cmake c++ standard tests in cxx_standards.cmake file
+INCLUDE(cxx_standards)
+
+# tests for compiler compliance and sets the C++ standard to C++11
+USE_CXX11_STANDARD()
 
 # SOURCES_PREFIX refers to the source folder and is useful when stating
 # the source files depedencies of a target
