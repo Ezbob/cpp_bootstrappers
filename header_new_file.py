@@ -18,9 +18,10 @@ def die(error_msg, error_code=1):
 def parse_cli_args():
     parser = argparse.ArgumentParser(description="header generator tool for c/c++")
     parser.add_argument("new_filepath", type=pathlib.Path)
+    parser.add_argument("-l", "--license", type=str, default="mit", choices={"mit", "none"})
     return parser.parse_args()
 
-def get_license_lines(replacements, license_filename="mit", delimiter="//"):
+def get_license_lines(replacements, license_filename, delimiter="//"):
     with (ROOT_DIR / "license_templates" / license_filename).open(mode="r") as license_file:
         for line in license_file:
             result_line = line
@@ -41,7 +42,8 @@ def main(argv):
     }
 
     with argv.new_filepath.open(mode="w+") as out_file:
-        out_file.writelines(get_license_lines(replacements=replacement_parameters))
+        if argv.license != "none":
+            out_file.writelines(get_license_lines(replacements=replacement_parameters, license_filename=argv.license))
 
         header_symbol = "_HEADER_GUARD_{}".format(uuid.uuid4().hex)
 
@@ -49,7 +51,7 @@ def main(argv):
             "#ifndef {}\n".format(header_symbol),
             "#define {}\n".format(header_symbol),
             "\n",
-            "// add you code here\n",
+            "// add your code here\n",
             "\n",
             "#endif\n"
         ])
