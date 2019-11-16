@@ -45,10 +45,11 @@ fi
 CUR_DIR=$(dirname $0)
 TEMPLATE_DIR=${CUR_DIR}/build_sys_templates
 TEMP_DIR=${CUR_DIR}/.tmp/${RANDOM}build_sys_temp${RANDOM}
-CURRENT_YEAR=$(date +%Y)
 
+CURRENT_YEAR=$(date +%Y)
 PROJECT_NAME=$(get_input "Project name ?" "Untitled")
 PROJECT_DESCRIPTION=$(get_input "Project description ?")
+AUTHOR=$(get_input "Project author ?" "Anders Busch")
 
 echo "Copying templates over to '${OUT_DIR}'..."
 make_resources
@@ -60,6 +61,7 @@ ALL_REPLACE_TEMPLATES_FILES=$(find ${TEMP_DIR} -type f)
 replace_parameter "@@CURRENT_YEAR@@" "${CURRENT_YEAR}" "${ALL_REPLACE_TEMPLATES_FILES}"
 replace_parameter "@@PROJECT_NAME@@" "${PROJECT_NAME}" "${ALL_REPLACE_TEMPLATES_FILES}"
 replace_parameter "@@PROJECT_DESCRIPTION@@" "${PROJECT_DESCRIPTION}" "${ALL_REPLACE_TEMPLATES_FILES}"
+replace_parameter "@@AUTHOR_NAME@@" "${AUTHOR}" "${ALL_REPLACE_TEMPLATES_FILES}"
 
 cd ${TEMP_DIR} && cp -r -n . ${OUT_DIR%/}/ && cd - 2> /dev/null > /dev/null
 

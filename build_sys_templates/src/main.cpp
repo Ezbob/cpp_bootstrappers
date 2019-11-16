@@ -1,7 +1,7 @@
 
 // MIT License
 //
-// Copyright (c) @@CURRENT_YEAR@@ Anders Busch
+// Copyright (c) @@CURRENT_YEAR@@ @@AUTHOR_NAME@@
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
