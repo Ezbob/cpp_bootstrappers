@@ -20,6 +20,18 @@ def die(error_msg, error_code=1):
 def parse_cli_args():
     parser = argparse.ArgumentParser(description="Build system bootstrapper for c/c++")
     parser.add_argument("destination_dir", type=pathlib.Path, nargs="?", default=pathlib.Path(".").resolve())
+
+    parameter_parameter_group = parser.add_argument_group(
+        title="Parameter arguments", 
+        description="Replacement parameters used in template files"
+    )
+
+    parameter_parameter_group.add_argument('--author', type=str, default=None)
+    parameter_parameter_group.add_argument('--current-year', type=int, default=int(date.today().year))
+    parameter_parameter_group.add_argument('--project-name', type=str, default=None)
+    parameter_parameter_group.add_argument('--project-description', type=str, default=None)
+
+
     return parser.parse_args()
 
 
@@ -64,13 +76,27 @@ def copy_files_to_output_dir(source_dir, destination_dir, replacement_parameters
                     opened_output_file.writelines(get_replaced_lines(opened_input_file, replacement_parameters))
 
 
-def main(argv):
-    replacement_parameters = {
-        "@@CURRENT_YEAR@@": date.today().year,
-        "@@AUTHOR_NAME@@": input_or_default(prompt="Author?", default="Anders Busch"),
-        "@@PROJECT_NAME@@": input_or_default(prompt="Project name?", default="Untitled"),
-        "@@PROJECT_DESCRIPTION@@": input_or_default(prompt="Project description?")
+def get_parameters(argv):
+
+    def not_none(val):
+        return val is not None
+
+    def not_none_and_not_empty(val):
+        return val is not None and len(val) > 0
+
+    author = argv.author if not_none(argv.author) else input_or_default(prompt="Author?", default="Anders Busch")
+    project_name = argv.project_name if not_none_and_not_empty(argv.project_name) else input_or_default(prompt="Project name?", default="Untitled")
+    project_description = argv.project_description if not_none(argv.project_description) else input_or_default(prompt="Project description?")
+
+    return {
+        "@@CURRENT_YEAR@@": argv.current_year,
+        "@@AUTHOR_NAME@@": author,
+        "@@PROJECT_NAME@@": project_name,
+        "@@PROJECT_DESCRIPTION@@": project_description
     }
+
+def main(argv):
+    replacement_parameters = get_parameters(argv)
 
     source_dir = ROOT_DIR / "build_sys_templates"
 
