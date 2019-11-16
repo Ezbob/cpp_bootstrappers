@@ -49,8 +49,8 @@ def input_or_default(prompt, default=''):
 
 def copy_files_to_output_dir(source_dir, destination_dir, replacement_parameters):
     for prefix, _, files in os.walk(source_dir):
+        pathprefix = pathlib.Path(prefix)
         for temp_filename in files:
-            pathprefix = pathlib.Path(prefix)
 
             path_input = pathprefix / temp_filename
             path_output_dir = destination_dir / pathprefix.relative_to(source_dir)
