@@ -18,19 +18,18 @@ def die(error_msg, error_code=1):
 
 
 def parse_cli_args():
-    parser = argparse.ArgumentParser(description="Build system bootstrapper for c/c++")
+    parser = argparse.ArgumentParser(description="Build system bootstrapper for C++")
     parser.add_argument("destination_dir", type=pathlib.Path, nargs="?", default=pathlib.Path(".").resolve())
 
-    parameter_parameter_group = parser.add_argument_group(
-        title="Parameter arguments", 
+    parameter_group = parser.add_argument_group(
+        title="Parameter arguments",
         description="Replacement parameters used in template files"
     )
 
-    parameter_parameter_group.add_argument('--author', type=str, default=None)
-    parameter_parameter_group.add_argument('--current-year', type=int, default=int(date.today().year))
-    parameter_parameter_group.add_argument('--project-name', type=str, default=None)
-    parameter_parameter_group.add_argument('--project-description', type=str, default=None)
-
+    parameter_group.add_argument('--author', type=str, default=None)
+    parameter_group.add_argument('--current-year', type=int, default=int(date.today().year))
+    parameter_group.add_argument('--project-name', type=str, default=None)
+    parameter_group.add_argument('--project-description', type=str, default=None)
 
     return parser.parse_args()
 
@@ -85,7 +84,7 @@ def get_parameters(argv):
         return val is not None and len(val) > 0
 
     author = argv.author if not_none(argv.author) else input_or_default(prompt="Author?", default="Anders Busch")
-    project_name = argv.project_name if not_none_and_not_empty(argv.project_name) else input_or_default(prompt="Project name?", default="Untitled")
+    project_name = argv.project_name if not_none_and_not_empty(argv.project_name) else input_or_default(prompt="Project name?", default=argv.destination_dir.name)
     project_description = argv.project_description if not_none(argv.project_description) else input_or_default(prompt="Project description?")
 
     return {
@@ -100,7 +99,9 @@ def main(argv):
 
     source_dir = ROOT_DIR / "build_sys_templates"
 
-    copy_files_to_output_dir(source_dir, argv.destination_dir, replacement_parameters)
+    destination_dir = argv.destination_dir
+
+    copy_files_to_output_dir(source_dir, destination_dir, replacement_parameters)
 
 
 if __name__ == "__main__":

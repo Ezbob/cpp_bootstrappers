@@ -19,6 +19,7 @@ def die(error_msg, error_code=1):
 def parse_cli_args():
     parser = argparse.ArgumentParser(description="header generator tool for c/c++")
     parser.add_argument("new_filepath", type=pathlib.Path)
+    parser.add_argument("-a", "--author", type=str, default="Anders Busch")
     parser.add_argument("-l", "--license", type=str, default="mit", choices={"mit", "none"}, help="Which license to preppend to the new file")
     parser.add_argument("-n", "--no-include", action="store_true", help="Do not generate a include preprocessor statement")
     parser.add_argument("-c", "--using-c", action="store_true", help="Header includes will be prefixed with .h instead of .hpp to be compatible with C")
@@ -34,7 +35,7 @@ def get_replaced_lines(stream, replacements, delimiter="//"):
         result_line = line
         for key, value in replacements.items():
             if key in line:
-                result_line = line.replace(key, str(value))
+                result_line = result_line.replace(key, str(value))
         if len(result_line.strip()) == 0:
             yield "{}\n".format(delimiter)
         else:
@@ -51,7 +52,8 @@ def main(argv):
     if argv.new_filepath.exists(): die("File already exists. Stopping")
 
     replacement_parameters = {
-        "@@CURRENT_YEAR@@": date.today().year
+        "@@CURRENT_YEAR@@": date.today().year,
+        "@@AUTHOR_NAME@@": argv.author
     }
 
     with argv.new_filepath.open(mode="w+") as out_file:
