@@ -1,11 +1,11 @@
 # cpp_bootstrappers
 Various shell script tools for bootstrapping C++ constructs
 
-# How to use
+## How to use
 
 Clone this repo, and add its path to your OSs PATH environmental variable.
 
-## Dependencies
+### Dependencies
 
 For python scripts:
   
