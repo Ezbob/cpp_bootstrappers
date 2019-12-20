@@ -8,6 +8,8 @@ BUILD_TYPE?=Debug
 
 BUILD_DIR=${BUILD_PREFIX}/${BUILD_TYPE}
 
+.PHONY: debug release all help clean _build
+
 all: debug
 
 help:
@@ -28,13 +30,11 @@ release:
 clean:
 	$(RM) -rf ${BUILD_PREFIX}
 
-_build: ${BUILD_DIR}/CMakeFiles
-	cmake --build ${BUILD_DIR}
+_build: ${BUILD_DIR}
+	cmake --build $<
 
 ${BUILD_DIR}:
-	mkdir -p $@
-
-${BUILD_DIR}/CMakeFiles: ${BUILD_DIR}
+	@mkdir -p $@
 	@echo "Setting up build system using '${BUILD_SYSTEM}'..."
 	@cd ${BUILD_DIR} && cmake \
 		-DPROJECT_DESCRIPTION="${PROJECT_DESCRIPTION}" \
